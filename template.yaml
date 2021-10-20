@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  hello_world
+
+  Sample SAM Template for hello_world
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 8
+
+Resources:
+  S3LambdaFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: hello_world/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      Policies:
+        - AmazonS3ObjectLambdaExecutionRolePolicy
+
+  S3EventLambdaFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: hello_world/
+      Handler: s3event.lambda_handler
+      Runtime: python3.7
+      Policies:
+        - AmazonS3FullAccess
+
+Outputs:
+  S3LambdaFunction:
+    Description: "S3LambdaFunction ARN"
+    Value: !GetAtt S3LambdaFunction.Arn
+  S3EventLambdaFunction:
+    Description: "S3EventLambdaFunction ARN"
+    Value: !GetAtt S3EventLambdaFunction.Arn
